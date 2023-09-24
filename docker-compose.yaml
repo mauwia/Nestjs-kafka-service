@@ -1,3 +1,6 @@
+networks:
+  app-net:
+    driver: bridge
 services:
   kafdrop:
     image: obsidiandynamics/kafdrop
@@ -24,6 +27,8 @@ services:
       KAFKA_RESTART_ATTEMPTS: "10"
       KAFKA_RESTART_DELAY: "5"
       ZOOKEEPER_AUTOPURGE_PURGE_INTERVAL: "0"
+    networks:
+      - app-net
   api_gateway:
     build:
       context: api_gateway
@@ -41,6 +46,8 @@ services:
       - /usr/src/app/node_modules
     ports:
       - '3000:3000'
+    networks:
+      - app-net
   user:
     build:
       context: auth
@@ -56,6 +63,8 @@ services:
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
+    networks:
+      - app-net
   product:
     build:
       context: product
@@ -71,6 +80,8 @@ services:
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
+    networks:
+      - app-net
   order:
     build:
       context: order
@@ -86,6 +97,8 @@ services:
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
+    networks:
+      - app-net
   user_db:
     image: postgres:latest
     container_name: user_db
@@ -95,6 +108,8 @@ services:
       POSTGRES_DB: user
     ports:
       - "5432:5432" # Expose the database port
+    networks:
+      - app-net
   product_db:
     image: postgres:latest
     container_name: product_db
@@ -104,6 +119,8 @@ services:
       POSTGRES_DB: product
     ports:
       - "5430:5432" # Expose the database port
+    networks:
+      - app-net
   order_db:
     image: postgres:latest
     container_name: order_db
@@ -113,4 +130,6 @@ services:
       POSTGRES_DB: order
     ports:
       - "5434:5432" # Expose the database port
+    networks:
+      - app-net
 
