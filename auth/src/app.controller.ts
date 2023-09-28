@@ -10,7 +10,7 @@ export class AppController {
   @MessagePattern(UserTopics.ADD_USER)
   addUser(data: any) {
     console.log('in add user')
-    return this.appService.createUser(data);
+    return this.appService.createUser(data.value);
   }
   @MessagePattern(UserTopics.GET_USER)
   getUser(data) {
